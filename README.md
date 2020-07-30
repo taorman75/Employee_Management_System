@@ -21,7 +21,7 @@ To run this application, the user must install the following items in their comm
 
 ## Usage
 
-![browser screen shot](https://github.com/taorman75/Employee_Management_System/blob/master/CHANGE.jpg)
+![app menu screen shot](https://github.com/taorman75/Employee_Management_System/blob/master/Assets/MainMenu.jpg)
 
 ## Questions
 
