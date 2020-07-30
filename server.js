@@ -155,6 +155,7 @@ const addDepartment = () => {
 const addRole = () => {
     connection.query("SELECT * FROM department", (err, departments) => {
         if (err) throw err;
+        var roleChoices = departments.map(item => departments.name);
     
     inquirer.prompt([
         {
@@ -171,7 +172,7 @@ const addRole = () => {
             type: "rawlist",
             name: "department_id",
             message: "What department is the role in?",
-            choices: departments.map(item => departments.name)
+            choices: roleChoices
         }
     ]).then(({ title, salary, department_id }) => { 
         connection.query(
@@ -183,7 +184,7 @@ const addRole = () => {
             },
             (err, result) => {
                 if (err) throw err;
-                console.log(`Successfully added the role '${title}!`);
+                console.log(`Successfully added the role !`);
                 userMenu();
             }
         ) 
