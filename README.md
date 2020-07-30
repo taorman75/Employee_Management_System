@@ -21,6 +21,8 @@ To run this application, the user must install the following items in their comm
 
 ## Usage
 
+Upon running the node server.js, the following main menu screen will appear. The user may use the arrow keys to select an action.
+
 ![app menu screen shot](https://github.com/taorman75/Employee_Management_System/blob/master/Assets/MainMenu.jpg)
 
 ## Questions
