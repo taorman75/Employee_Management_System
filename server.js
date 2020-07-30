@@ -15,8 +15,8 @@ const userMenu = () => {
         {
             type: "list",
             name: "action",
-            message: "What would you like to do?",
-            choices: ["View Departments", "View Roles", "View Employees", "Add Departments", "Add Roles", "Add Employees", "Update Employee Roles", "Exit"]
+            message: "What would you like to do?", //TODO ADD Update Employee Manager, Remove Employee
+            choices: ["View Departments", "View Roles", "View Employees", "Add Department", "Add Role", "Add Employee", "Update Employee Role", "Exit"]
         }
     ]).then(({ action }) => {
         switch(action) {
@@ -32,21 +32,30 @@ const userMenu = () => {
                 viewEmployees();
                 break;
 
-            case "Add Departments":
-                //function
+            case "Add Department":
+                addDepartment();
                 break;
 
-            case "Add Roles":
-                //function
+            case "Add Role":
+                addRole();
                 break;
 
-            case "Add Employees":
+            case "Add Employee":
                 addEmployee();
                 break;
 
-            case "Update Employee Roles":
+            case "Update Employee Role":
                 //function
                 break;
+
+            //TODO: Add these later
+            // case "Update Employee Manager":
+            //     //function
+            //     break;
+
+            // case "Remove Employee":
+            //     //function
+            //     break;
 
             default:
                 connection.end;
@@ -83,7 +92,7 @@ const viewRoles = () => {
 const addEmployee = () => {
     inquirer.prompt([
         {
-            type: "input", // input is default so you could leave this off
+            type: "input",
             name: "first_name",
             message: "What is the employee's first name?"
         },
@@ -121,6 +130,66 @@ const addEmployee = () => {
     })
 };
 
+const addDepartment = () => {
+    inquirer.prompt([
+        {
+            type: "input", 
+            name: "name",
+            message: "What is the name of the department you'd like to add?"
+        }
+    ]).then(({ name }) => { 
+        connection.query(
+            "INSERT INTO department SET ?", 
+            {
+            name: name
+            },
+            (err, result) => {
+                if (err) throw err;
+                console.log(`Successfully added department '${name}!`);
+                userMenu();
+            }
+        ) 
+    })
+};
+
+const addRole = () => {
+    connection.query("SELECT * FROM department", (err, departments) => {
+        if (err) throw err;
+    
+    inquirer.prompt([
+        {
+            type: "input", 
+            name: "title",
+            message: "What is the title of the new role?"
+        },
+        {
+            type: "input",
+            name: "salary",
+            message: "What is the annual salary?"
+        },
+        {
+            type: "rawlist",
+            name: "department_id",
+            message: "What department is the role in?",
+            choices: departments.map(item => departments.name)
+        }
+    ]).then(({ title, salary, department_id }) => { 
+        connection.query(
+            "INSERT INTO role SET ?", 
+            {
+            title: title,
+            salary: salary,
+            department_id: department_id
+            },
+            (err, result) => {
+                if (err) throw err;
+                console.log(`Successfully added the role '${title}!`);
+                userMenu();
+            }
+        ) 
+    })
+})
+};
 
 
 connection.connect((err) => {
