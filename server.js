@@ -41,7 +41,7 @@ const userMenu = () => {
                 break;
 
             case "Add Employees":
-                //function
+                addEmployee();
                 break;
 
             case "Update Employee Roles":
@@ -54,3 +54,46 @@ const userMenu = () => {
         }
     })
 };
+
+const addEmployee = () => {
+    inquirer.prompt([
+        {
+            type: "input", // input is default so you could leave this off
+            name: "first_name",
+            message: "What is the employee's first name?"
+        },
+        {
+            name: "last_name",
+            message: "What is the employee's last name?"
+        },
+        {
+            name: "role_id",
+            message: "What is the employee's role?"
+        },
+        {
+            name: "manager_id",
+            message: "Who is the employee's manager?"
+        }
+    ]).then(({ first_name, last_name, role_id, manager_id }) => { // done as a destructure
+        connection.query(
+            "INSERT INTO employees SET ?", 
+            {
+            first_name: first_name,  
+            last_name: last_name,
+            role_id: role_id,
+            manager_id: manager_id
+            },
+            (err, result) => {
+                if (err) throw err;
+                console.log(`Successfully added employee '${first_name} ${last_name}!`);
+                userMenu();
+            }
+        ) 
+    })
+};
+
+connection.connect((err) => {
+    if (err) throw err;
+    console.log(`Now connected at MySQL at thread ${connection.threadId}`);
+    userMenu();
+});
