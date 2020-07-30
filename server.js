@@ -10,6 +10,13 @@ const connection = mysql.createConnection({
     database: "employee_tracker"
 });
 
+console.log (`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**************                                     **************
+**************     Welcome to the Employee         **************
+**************        Management System            **************
+**************                                     **************
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
+
 const userMenu = () => {
     inquirer.prompt([
         {
@@ -90,6 +97,22 @@ const viewRoles = () => {
 };
 
 const addEmployee = () => {
+    connection.query("SELECT * FROM role", (err, roles) => {
+        if (err) throw err;
+        
+        var roleChoices = roles.map(({ id, title }) => ({
+            name: title,
+            value: id
+        }));
+    connection.query("SELECT * FROM employees", (err, employee) => {
+        if (err) throw err;
+
+        var managerChoices = employee.map(({ manager_id }) => ({
+            
+            value: manager_id
+        }));
+    })
+        
     inquirer.prompt([
         {
             type: "input",
@@ -104,15 +127,15 @@ const addEmployee = () => {
             type: "list",
             name: "role_id",
             message: "What is the employee's role?",
-            choices: ["Sales Lead", "Salesperson", "Lead Engineer", "Software Engineer", "Account Manager", "Accountant", "Legal Team Lead", "Lawyer"]
+            choices:  roleChoices
         },
         {
             type: "list",
             name: "manager_id",
             message: "Who is the employee's manager?",
-            choices: ["Jane Doe", "Alice Kravitz", "Jake Peralta", "Raymond Holt"]
+            choices: managerChoices
         }
-    ]).then(({ first_name, last_name, role_id, manager_id }) => { // done as a destructure
+    ]).then(({ first_name, last_name, role_id, manager_id }) => { 
         connection.query(
             "INSERT INTO employees SET ?", 
             {
@@ -128,6 +151,7 @@ const addEmployee = () => {
             }
         ) 
     })
+})
 };
 
 const addDepartment = () => {
@@ -190,7 +214,7 @@ const addRole = () => {
             },
             (err, result) => {
                 if (err) throw err;
-                console.log(`Successfully added the role !`);
+                console.log(`Successfully added the role!`);
                 userMenu();
             }
         ) 
