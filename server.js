@@ -23,7 +23,7 @@ const userMenu = () => {
             type: "list",
             name: "action",
             message: "What would you like to do?", //TODO ADD Update Employee Manager, Remove Employee
-            choices: ["View Departments", "View Roles", "View Employees", "Add Department", "Add Role", "Add Employee", "Update Employee Role", "Exit"]
+            choices: ["View Departments", "View Roles", "View Employees", "Add Department", "Add Role", "Add Employee", "Delete Department", "Delete Role", "Delete Employee", "Update Employee Role", "Exit"]
         }
     ]).then(({ action }) => {
         switch(action) {
@@ -50,6 +50,18 @@ const userMenu = () => {
             case "Add Employee":
                 addEmployee();
                 break;
+
+            case "Delete Department":
+                deleteDepartment();
+                break;
+
+            // case "Delete Role":
+            //     deleteRole();
+            //     break;
+
+            // case "Delete Employee":
+            //     deleteEmployee();
+            //     break;
 
             case "Update Employee Role":
                 //function
@@ -221,6 +233,82 @@ const addRole = () => {
     })
 })
 };
+
+// TODO fix deleteDepartment
+// const deleteDepartment = () => {
+//     connection.query("SELECT * FROM department", (err, departments) => {
+//         if (err) throw err;
+        
+//         const deptChoices = departments.map(({ id, name }) => ({
+//             name: name,
+//             value: id
+//         }));
+        
+//         console.log(deptChoices)
+//     inquirer.prompt([
+//         {
+//             type: "list", 
+//             name: "id",
+//             message: "What is the name of the department you'd like to delete?",
+//             choices: deptChoices
+//         }
+//     ]).then(({ id }) => { 
+//         connection.query(
+//             "DELETE FROM department WHERE id = ?", 
+//             {
+//             id: id
+//             },
+//             (err, result) => {
+//                 if (err) throw err;
+//                 console.log(`Successfully deleted department!`);
+//                 userMenu();
+//             }
+//         ) 
+//     })
+// }) 
+// };
+//TODO Build deleteEmployee
+// const deleteEmployee = () => {
+//     connection.query("SELECT * FROM employees", (err, items) => {
+//         if (err) throw err;
+//         console.table(items);
+//         userMenu();
+//     })
+// };
+
+//TODO Fix deleteRole
+// const deleteRole = () => {
+   // connection.query("SELECT * FROM role", (err, roles) => {
+        //         if (err) throw err;
+                
+        //         const roleChoices = roles.map(({ id, title }) => ({
+        //             id: id,
+        //             title: title
+        //         }));
+                
+        //         console.log(roleChoices)
+        //     inquirer.prompt([
+        //         {
+        //             type: "list", 
+        //             name: "id",
+        //             message: "What is the name of the role you'd like to delete?",
+        //             choices: roleChoices
+        //         }
+        //     ]).then(({ id }) => { 
+        //         connection.query(
+        //             "DELETE FROM department WHERE id = ?", 
+        //             {
+        //             id: id
+        //             },
+        //             (err, result) => {
+        //                 if (err) throw err;
+        //                 console.log(`Successfully deleted role!`);
+        //                 userMenu();
+        //             }
+        //         ) 
+        //     })
+        // }) 
+// };
 
 
 connection.connect((err) => {
