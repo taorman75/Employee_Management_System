@@ -21,15 +21,15 @@ const userMenu = () => {
     ]).then(({ action }) => {
         switch(action) {
             case "View Departments":
-                //function
+                viewDepartments();
                 break;
 
             case "View Roles":
-                //function
+                viewRoles();
                 break;
 
             case "View Employees":
-                //function
+                viewEmployees();
                 break;
 
             case "Add Departments":
@@ -55,6 +55,31 @@ const userMenu = () => {
     })
 };
 
+const viewDepartments = () => {
+    connection.query("SELECT * FROM department", (err, items) => {
+        if (err) throw err;
+        console.table(items);
+        userMenu();
+    })
+};
+
+const viewEmployees = () => {
+    connection.query("SELECT * FROM employees", (err, items) => {
+        if (err) throw err;
+        console.table(items);
+        userMenu();
+    })
+};
+
+
+const viewRoles = () => {
+    connection.query("SELECT * FROM role", (err, items) => {
+        if (err) throw err;
+        console.table(items);
+        userMenu();
+    })
+};
+
 const addEmployee = () => {
     inquirer.prompt([
         {
@@ -67,12 +92,16 @@ const addEmployee = () => {
             message: "What is the employee's last name?"
         },
         {
+            type: "list",
             name: "role_id",
-            message: "What is the employee's role?"
+            message: "What is the employee's role?",
+            choices: ["Sales Lead", "Salesperson", "Lead Engineer", "Software Engineer", "Account Manager", "Accountant", "Legal Team Lead", "Lawyer"]
         },
         {
+            type: "list",
             name: "manager_id",
-            message: "Who is the employee's manager?"
+            message: "Who is the employee's manager?",
+            choices: ["Jane Doe", "Alice Kravitz", "Jake Peralta", "Raymond Holt"]
         }
     ]).then(({ first_name, last_name, role_id, manager_id }) => { // done as a destructure
         connection.query(
@@ -91,6 +120,8 @@ const addEmployee = () => {
         ) 
     })
 };
+
+
 
 connection.connect((err) => {
     if (err) throw err;
