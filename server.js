@@ -10,12 +10,14 @@ const connection = mysql.createConnection({
     database: "employee_tracker"
 });
 
-console.log (`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+console.log (`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **************                                     **************
 **************     Welcome to the Employee         **************
 **************        Management System            **************
 **************                                     **************
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`)
 
 const userMenu = () => {
     inquirer.prompt([
@@ -64,7 +66,7 @@ const userMenu = () => {
                 break;
 
             case "Update Employee Role":
-                //function
+                updateEmployee();
                 break;
 
             //TODO: Add these later
@@ -126,7 +128,6 @@ const addEmployee = () => {
         }));
 
         // var managerChoices = employeeChoices.filter()
-    
         
     inquirer.prompt([
         {
@@ -237,18 +238,77 @@ const addRole = () => {
 })
 };
 
+//todo update employee role
+
+const updateEmployee = () => {
+    connection.query("SELECT * FROM employees", (err, employees) => {
+        if (err) throw err;
+        
+        var empChoices = employees.map(({ id, first_name, last_name }) => ({
+            
+            value: id,
+            first_name: first_name,
+            last_name: last_name
+        }));
+    connection.query("SELECT * FROM role", (err, role) => {
+        if (err) throw err;
+
+        var roleChoices = role.map(({ id, title }) => ({
+            value: id,
+            title: title
+        }));
+
+        
+        // var managerChoices = employeeChoices.filter()
+        
+    inquirer.prompt([
+        {
+            type: "list",
+            name: "id",
+            message: "Which employee would you like to update?",
+            choices: empChoices
+        },
+        {
+            type: "list",
+            name: "role",
+            message: "What is the employee's new role?",
+            choices:  roleChoices
+        },
+        {
+            type: "list",
+            name: "manager_id",
+            message: "Who is the employee's manager?",
+            choices: empChoices
+        }
+    ]).then(({ first_name, last_name, role_id, manager_id }) => { 
+        connection.query(
+            "UPDATE employees SET ? WHERE id = ?", 
+            {
+            first_name: first_name,  
+            last_name: last_name,
+            role_id: role_id,
+            manager_id: manager_id
+            },
+            (err, result) => {
+                if (err) throw err;
+                console.log(`Successfully updated employee '${first_name} ${last_name}'!`);
+                userMenu();
+            }
+        ) 
+    })})
+})
+     
+};
+
+
 
 const deleteDepartment = () => {
     connection.query("SELECT * FROM department", (err, departments) => {
         if (err) throw err;
-        
-        const deptChoices = departments.map(({ id, name }) => ({
+        var deptChoices = departments.map(({ id, name }) => ({
             value: id,
-            name: name
-            
-        }));
-        
-        
+            name: name   
+        }));      
     inquirer.prompt([
         {
             type: "list", 
@@ -270,12 +330,11 @@ const deleteDepartment = () => {
     })
 }) 
 };
-//TODO Build deleteEmployee
+
 const deleteEmployee = () => {
     connection.query("SELECT * FROM employees", (err, employees) => {
         if (err) throw err;
-        
-        const empChoices = employees.map(({ id, first_name, last_name }) => ({
+        var empChoices = employees.map(({ id, first_name, last_name }) => ({
             value: id,
             first_name: first_name,
             last_name: last_name
@@ -312,10 +371,7 @@ const deleteRole = () => {
         const roleChoices = roles.map(({ id, title }) => ({
             value: id,
             name: title
-            
-        }));
-        
-        
+        }));  
     inquirer.prompt([
         {
             type: "list", 
