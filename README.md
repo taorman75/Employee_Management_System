@@ -25,6 +25,14 @@ Upon running the node server.js, the following main menu screen will appear. The
 
 ![app menu screen shot](https://github.com/taorman75/Employee_Management_System/blob/master/Assets/MainMenu.jpg)
 
+The user may view a series of informational tables, listing all Departments, all Employees, all Roles, or all Employees by Roles.
+
+![table screen shot](https://github.com/taorman75/Employee_Management_System/blob/master/Assets/ViewTable.jpg)
+
+The user may select a number of actions that require answering a series of prompts. These actions include the abilities to add/delete a Department, add/delete a Role, or add/delete an Employee. The user can also update an Employee Role.
+
+![table screen shot](https://github.com/taorman75/Employee_Management_System/blob/master/Assets/Prompts.jpg)
+
 ## Questions
 
 Please direct any questions to *tana.owens@gmail.com* or visit my GitHub profile at https://github.com/taorman75.
