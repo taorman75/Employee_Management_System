@@ -243,7 +243,7 @@ const deleteDepartment = () => {
         if (err) throw err;
         
         const deptChoices = departments.map(({ id, name }) => ({
-            id: id,
+            value: id,
             name: name
             
         }));
