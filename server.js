@@ -25,11 +25,12 @@ const userMenu = () => {
       {
         type: "list",
         name: "action",
-        message: "What would you like to do?", //TODO ADD Update Employee Manager, Remove Employee
+        message: "What would you like to do?", 
         choices: [
           "View Departments",
           "View Roles",
           "View Employees",
+          "View Employees by Role",
           "Add Department",
           "Add Role",
           "Add Employee",
@@ -54,6 +55,10 @@ const userMenu = () => {
         case "View Employees":
           viewEmployees();
           break;
+
+        case "View Employees by Role":
+            viewEmpByRole();
+            break;
 
         case "Add Department":
           addDepartment();
@@ -83,15 +88,6 @@ const userMenu = () => {
           updateEmployee();
           break;
 
-        //TODO: Add these later
-        // case "Update Employee Manager":
-        //     //function
-        //     break;
-
-        // case "Remove Employee":
-        //     //function
-        //     break;
-
         default:
           connection.end;
       }
@@ -120,6 +116,14 @@ const viewRoles = () => {
     console.table(items);
     userMenu();
   });
+};
+
+const viewEmpByRole = () => {
+    connection.query("SELECT first_name, last_name, title FROM employees LEFT JOIN role ON employees.role_id = role.id", (err, items) => {
+        if (err) throw err;
+        console.table(items);
+        userMenu();
+    })
 };
 
 const addEmployee = () => {
@@ -353,8 +357,7 @@ const deleteEmployee = () => {
     if (err) throw err;
     var empChoices = employees.map(({ id, first_name, last_name }) => ({
       value: id,
-      first_name: first_name,
-      last_name: last_name,
+      name: first_name + " " + last_name,
     }));
     console.log(empChoices);
 
