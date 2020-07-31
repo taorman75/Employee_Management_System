@@ -237,7 +237,7 @@ const addRole = () => {
 })
 };
 
-// TODO fix deleteDepartment
+
 const deleteDepartment = () => {
     connection.query("SELECT * FROM department", (err, departments) => {
         if (err) throw err;
@@ -248,7 +248,7 @@ const deleteDepartment = () => {
             
         }));
         
-        console.log(deptChoices)
+        
     inquirer.prompt([
         {
             type: "list", 
@@ -257,11 +257,10 @@ const deleteDepartment = () => {
             choices: deptChoices
         }
     ]).then(({ id }) => { 
+        console.log(id);
         connection.query(
-            "DELETE FROM department WHERE id = ?", 
-            {
-            id: id
-            },
+            "DELETE FROM department WHERE id = ?", id,
+            
             (err, result) => {
                 if (err) throw err;
                 console.log(`Successfully deleted department!`);
