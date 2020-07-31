@@ -55,9 +55,9 @@ const userMenu = () => {
                 deleteDepartment();
                 break;
 
-            // case "Delete Role":
-            //     deleteRole();
-            //     break;
+            case "Delete Role":
+                deleteRole();
+                break;
 
             // case "Delete Employee":
             //     deleteEmployee();
@@ -279,39 +279,39 @@ const deleteDepartment = () => {
 //     })
 // };
 
-//TODO Fix deleteRole
-// const deleteRole = () => {
-   // connection.query("SELECT * FROM role", (err, roles) => {
-        //         if (err) throw err;
-                
-        //         const roleChoices = roles.map(({ id, title }) => ({
-        //             id: id,
-        //             title: title
-        //         }));
-                
-        //         console.log(roleChoices)
-        //     inquirer.prompt([
-        //         {
-        //             type: "list", 
-        //             name: "id",
-        //             message: "What is the name of the role you'd like to delete?",
-        //             choices: roleChoices
-        //         }
-        //     ]).then(({ id }) => { 
-        //         connection.query(
-        //             "DELETE FROM department WHERE id = ?", 
-        //             {
-        //             id: id
-        //             },
-        //             (err, result) => {
-        //                 if (err) throw err;
-        //                 console.log(`Successfully deleted role!`);
-        //                 userMenu();
-        //             }
-        //         ) 
-        //     })
-        // }) 
-// };
+
+const deleteRole = () => {
+    connection.query("SELECT * FROM role", (err, roles) => {
+        if (err) throw err;
+        
+        const roleChoices = roles.map(({ id, title }) => ({
+            value: id,
+            name: title
+            
+        }));
+        
+        
+    inquirer.prompt([
+        {
+            type: "list", 
+            name: "id",
+            message: "What is the name of the role you'd like to delete?",
+            choices: roleChoices
+        }
+    ]).then(({ id }) => { 
+        console.log(id);
+        connection.query(
+            "DELETE FROM role WHERE id = ?", id,
+            
+            (err, result) => {
+                if (err) throw err;
+                console.log(`Successfully deleted role!`);
+                userMenu();
+            }
+        ) 
+    })
+}) 
+};
 
 
 connection.connect((err) => {
