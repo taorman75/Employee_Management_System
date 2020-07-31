@@ -238,38 +238,39 @@ const addRole = () => {
 };
 
 // TODO fix deleteDepartment
-// const deleteDepartment = () => {
-//     connection.query("SELECT * FROM department", (err, departments) => {
-//         if (err) throw err;
+const deleteDepartment = () => {
+    connection.query("SELECT * FROM department", (err, departments) => {
+        if (err) throw err;
         
-//         const deptChoices = departments.map(({ id, name }) => ({
-//             name: name,
-//             value: id
-//         }));
+        const deptChoices = departments.map(({ id, name }) => ({
+            id: id,
+            name: name
+            
+        }));
         
-//         console.log(deptChoices)
-//     inquirer.prompt([
-//         {
-//             type: "list", 
-//             name: "id",
-//             message: "What is the name of the department you'd like to delete?",
-//             choices: deptChoices
-//         }
-//     ]).then(({ id }) => { 
-//         connection.query(
-//             "DELETE FROM department WHERE id = ?", 
-//             {
-//             id: id
-//             },
-//             (err, result) => {
-//                 if (err) throw err;
-//                 console.log(`Successfully deleted department!`);
-//                 userMenu();
-//             }
-//         ) 
-//     })
-// }) 
-// };
+        console.log(deptChoices)
+    inquirer.prompt([
+        {
+            type: "list", 
+            name: "id",
+            message: "What is the name of the department you'd like to delete?",
+            choices: deptChoices
+        }
+    ]).then(({ id }) => { 
+        connection.query(
+            "DELETE FROM department WHERE id = ?", 
+            {
+            id: id
+            },
+            (err, result) => {
+                if (err) throw err;
+                console.log(`Successfully deleted department!`);
+                userMenu();
+            }
+        ) 
+    })
+}) 
+};
 //TODO Build deleteEmployee
 // const deleteEmployee = () => {
 //     connection.query("SELECT * FROM employees", (err, items) => {
