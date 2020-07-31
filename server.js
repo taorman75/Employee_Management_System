@@ -59,9 +59,9 @@ const userMenu = () => {
                 deleteRole();
                 break;
 
-            // case "Delete Employee":
-            //     deleteEmployee();
-            //     break;
+            case "Delete Employee":
+                deleteEmployee();
+                break;
 
             case "Update Employee Role":
                 //function
@@ -271,13 +271,38 @@ const deleteDepartment = () => {
 }) 
 };
 //TODO Build deleteEmployee
-// const deleteEmployee = () => {
-//     connection.query("SELECT * FROM employees", (err, items) => {
-//         if (err) throw err;
-//         console.table(items);
-//         userMenu();
-//     })
-// };
+const deleteEmployee = () => {
+    connection.query("SELECT * FROM employees", (err, employees) => {
+        if (err) throw err;
+        
+        const empChoices = employees.map(({ id, first_name, last_name }) => ({
+            value: id,
+            first_name: first_name,
+            last_name: last_name
+        }));
+        console.log(empChoices)
+        
+    inquirer.prompt([
+        {
+            type: "list", 
+            name: "id",
+            message: "What is the name of the employee you'd like to delete?",
+            choices: empChoices
+        }
+    ]).then(({ id }) => { 
+        console.log(id);
+        connection.query(
+            "DELETE FROM employees WHERE id = ?", id,
+            
+            (err, result) => {
+                if (err) throw err;
+                console.log(`Successfully deleted employee!`);
+                userMenu();
+            }
+        ) 
+    })
+})   
+};
 
 
 const deleteRole = () => {
