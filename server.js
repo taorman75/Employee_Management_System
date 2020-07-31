@@ -119,11 +119,14 @@ const addEmployee = () => {
     connection.query("SELECT * FROM employees", (err, employee) => {
         if (err) throw err;
 
-        var managerChoices = employee.map(({ manager_id }) => ({
-            
+        var managerChoices = employee.map(({ first_name, last_name, manager_id }) => ({
+            first_name: first_name,
+            last_name: last_name,
             value: manager_id
         }));
-    })
+
+        // var managerChoices = employeeChoices.filter()
+    
         
     inquirer.prompt([
         {
@@ -158,11 +161,11 @@ const addEmployee = () => {
             },
             (err, result) => {
                 if (err) throw err;
-                console.log(`Successfully added employee '${first_name} ${last_name}!`);
+                console.log(`Successfully added employee '${first_name} ${last_name}'!`);
                 userMenu();
             }
         ) 
-    })
+    })})
 })
 };
 
