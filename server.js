@@ -224,9 +224,6 @@ const addRole = () => {
       name: name,
       value: id,
     }));
-    console.log(roleChoices);
-    console.log(deptChoices);
-
     inquirer
       .prompt([
         {
